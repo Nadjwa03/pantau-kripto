@@ -2,20 +2,20 @@ package com.example.pantaukripto.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Map;
+import java.util.List;
 
-public class CryptoInfoResponse {
+public class CryptoMapResponse {
     @SerializedName("data")
-    private Map<String, CryptoDetails> data;
+    List<Crypto> data;
 
     @SerializedName("status")
     private Status status;
 
-    public Map<String, CryptoDetails> getData() {
+    public List<Crypto> getData() {
         return data;
     }
 
-    public void setData(Map<String, CryptoDetails> data) {
+    public void setData(List<Crypto> data) {
         this.data = data;
     }
 

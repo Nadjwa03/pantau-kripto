@@ -2,51 +2,23 @@ package com.example.pantaukripto.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class Crypto {
-    @SerializedName("urls")
-    private Urls urls;
-    @SerializedName("logo")
-    private String logo;
     @SerializedName("id")
     private int id;
+    @SerializedName("rank")
+    private int rank;
     @SerializedName("name")
     private String name;
     @SerializedName("symbol")
     private String symbol;
     @SerializedName("slug")
     private String slug;
-    @SerializedName("description")
-    private String description;
-    @SerializedName("date_added")
-    private String dateAdded;
-    @SerializedName("date_launched")
-    private String dateLaunched;
-    @SerializedName("tags")
-    private List<String> tags;
-    @SerializedName("platform")
-    private String platform;
-    @SerializedName("category")
-    private String category;
-    @SerializedName("infinite_supply")
-    private Boolean infiniteSupply;
-
-    public Urls getUrls() {
-        return urls;
-    }
-
-    public void setUrls(Urls urls) {
-        this.urls = urls;
-    }
-
-    public String getLogo() {
-        return logo;
-    }
-
-    public void setLogo(String logo) {
-        this.logo = logo;
-    }
+    @SerializedName("is_active")
+    private int isActive;
+    @SerializedName("first_historical_data")
+    private String firstHistoricalData;
+    @SerializedName("last_historical_data")
+    private String lastHistoricalData;
 
     public int getId() {
         return id;
@@ -54,6 +26,14 @@ public class Crypto {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
     public String getName() {
@@ -80,59 +60,27 @@ public class Crypto {
         this.slug = slug;
     }
 
-    public String getDescription() {
-        return description;
+    public int getActive() {
+        return isActive;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setActive(int active) {
+        isActive = active;
     }
 
-    public String getDateAdded() {
-        return dateAdded;
+    public String getFirstHistoricalData() {
+        return firstHistoricalData;
     }
 
-    public void setDateAdded(String dateAdded) {
-        this.dateAdded = dateAdded;
+    public void setFirstHistoricalData(String firstHistoricalData) {
+        this.firstHistoricalData = firstHistoricalData;
     }
 
-    public String getDateLaunched() {
-        return dateLaunched;
+    public String getLastHistoricalData() {
+        return lastHistoricalData;
     }
 
-    public void setDateLaunched(String dateLaunched) {
-        this.dateLaunched = dateLaunched;
-    }
-
-    public List<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
-
-    public String getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(String platform) {
-        this.platform = platform;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public Boolean getInfiniteSupply() {
-        return infiniteSupply;
-    }
-
-    public void setInfiniteSupply(Boolean infiniteSupply) {
-        this.infiniteSupply = infiniteSupply;
+    public void setLastHistoricalData(String lastHistoricalData) {
+        this.lastHistoricalData = lastHistoricalData;
     }
 }
