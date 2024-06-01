@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.CryptoListFragment">
+    tools:context=".ui.CryptoBookmarkFragment">
 
+    <!-- TODO: Update blank fragment layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -19,7 +20,7 @@
             android:paddingTop="12dp"
             android:paddingEnd="16dp"
             android:paddingBottom="12dp"
-            android:text="Crypto List"
+            android:text="Bookmark List"
             android:textColor="@color/material_dynamic_neutral20"
             android:textSize="24dp"
             android:textStyle="bold"
@@ -27,40 +28,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/to_crypto_bookmark_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="36dp"
-            android:clickable="true"
-            android:foreground="@drawable/star_24dp"
-            android:foregroundGravity="center"
-            android:src="@drawable/star_24dp"
-            android:tint="#eab308"
-            app:backgroundTint="#fef9c3"
-            app:fabCustomSize="64dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:rippleColor="#fef08a" />
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/crypto_list_swipe_refresh_layout"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/crypto_list_bookmark_rv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/crypto_list_rv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:listitem="@layout/crypto_list_item" />
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            tools:listitem="@layout/crypto_list_item" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

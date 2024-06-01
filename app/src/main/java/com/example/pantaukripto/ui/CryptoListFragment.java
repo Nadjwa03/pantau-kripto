@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import com.example.pantaukripto.api.CmcApiClient;
 import com.example.pantaukripto.api.CmcApiService;
 import com.example.pantaukripto.models.Crypto;
 import com.example.pantaukripto.models.CryptoMapResponse;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -31,6 +33,8 @@ public class CryptoListFragment extends Fragment {
     private final int LIMIT = 50;
     private final int MAX_DATA = 5000;
     private CryptoListItemAdapter adapter;
+    private SwipeRefreshLayout cryptoListSwipeRefreshLayout;
+    private LinearLayoutManager layoutManager;
     private CmcApiService apiService;
     private int start = 1;
     private boolean isLoading = false;
@@ -47,16 +51,16 @@ public class CryptoListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         RecyclerView cryptoListRecyclerView = view.findViewById(R.id.crypto_list_rv);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new LinearLayoutManager(getContext());
         cryptoListRecyclerView.setLayoutManager(layoutManager);
 
-        adapter = new CryptoListItemAdapter(new CryptoListItemAdapter.OnItemClickListener() {
-            @Override
-            public void handle(Crypto crypto) {
-                Bundle bundle = new Bundle();
-                bundle.putString("cryptoId", String.valueOf(crypto.getId()));
-                Navigation.findNavController(view).navigate(R.id.action_cryptoListFragment_to_cryptoDetailsFragment, bundle);
-            }
+        cryptoListSwipeRefreshLayout = view.findViewById(R.id.crypto_list_swipe_refresh_layout);
+        FloatingActionButton toCryptoBookmarkFab = view.findViewById(R.id.to_crypto_bookmark_fab);
+
+        adapter = new CryptoListItemAdapter(crypto -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("CRYPTO_ID", String.valueOf(crypto.getId()));
+            Navigation.findNavController(view).navigate(R.id.action_cryptoListFragment_to_cryptoDetailsFragment, bundle);
         });
 
         cryptoListRecyclerView.setAdapter(adapter);
@@ -83,7 +87,20 @@ public class CryptoListFragment extends Fragment {
             }
         });
 
+        toCryptoBookmarkFab.setOnClickListener(v -> {
+            Navigation.findNavController(view).navigate(R.id.action_cryptoListFragment_to_cryptoBookmarkFragment);
+        });
+
+        cryptoListSwipeRefreshLayout.setOnRefreshListener(this::refresh);
+
         load();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refresh();
+        layoutManager.scrollToPositionWithOffset(0, 0);
     }
 
     private void load() {
@@ -106,8 +123,37 @@ public class CryptoListFragment extends Fragment {
 
             @Override
             public void onFailure(Call<CryptoMapResponse> call, Throwable t) {
-                Log.d("MainActivity", "CMC API getCryptoInfo failed", t);
+                Toast.makeText(getContext(), "Failed to fetch more data", Toast.LENGTH_SHORT).show();
+                Log.d("CryptoListFragment", "CMC API getCryptoMap failed", t);
                 isLoading = false;
+            }
+        });
+    }
+
+    private void refresh() {
+        start = 1;
+        isLoading = true;
+        Call<CryptoMapResponse> call = apiService.getCryptoMap("cmc_rank", start, LIMIT);
+        call.enqueue(new Callback<CryptoMapResponse>() {
+            @Override
+            public void onResponse(Call<CryptoMapResponse> call, Response<CryptoMapResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    CryptoMapResponse res = response.body();
+                    List<Crypto> cryptoList = res.getData();
+                    adapter.setCryptoList(cryptoList);
+                    start += LIMIT;
+                    Toast.makeText(getContext(), "Crypto data refreshed", Toast.LENGTH_SHORT).show();
+                }
+                isLoading = false;
+                cryptoListSwipeRefreshLayout.setRefreshing(false);
+            }
+
+            @Override
+            public void onFailure(Call<CryptoMapResponse> call, Throwable t) {
+                Toast.makeText(getContext(), "Failed to fetch more data", Toast.LENGTH_SHORT).show();
+                Log.d("CryptoListFragment", "CMC API getCryptoMap failed", t);
+                isLoading = false;
+                cryptoListSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }

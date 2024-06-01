@@ -25,8 +25,6 @@ public class CryptoDetails {
     private String dateLaunched;
     @SerializedName("tags")
     private List<String> tags;
-    @SerializedName("platform")
-    private String platform;
     @SerializedName("category")
     private String category;
     @SerializedName("infinite_supply")
@@ -110,14 +108,6 @@ public class CryptoDetails {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
-    }
-
-    public String getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(String platform) {
-        this.platform = platform;
     }
 
     public String getCategory() {
