@@ -3,6 +3,7 @@ package com.example.pantaukripto.ui;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pantaukripto.R;
 import com.example.pantaukripto.models.Crypto;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -25,6 +27,16 @@ public class CryptoListItemAdapter extends RecyclerView.Adapter<CryptoListItemAd
         notifyDataSetChanged();
     }
 
+    public void appendCryptoList(List<Crypto> cryptoList) {
+        if (this.cryptoList == null) {
+            this.setCryptoList(cryptoList);
+            return;
+        }
+        int startPosition = this.cryptoList.size();
+        this.cryptoList.addAll(cryptoList);
+        notifyItemRangeInserted(startPosition, cryptoList.size());
+    }
+
     @NonNull
     @Override
     public CryptoListItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -36,6 +48,9 @@ public class CryptoListItemAdapter extends RecyclerView.Adapter<CryptoListItemAd
     public void onBindViewHolder(@NonNull CryptoListItemViewHolder holder, int position) {
         Crypto crypto = cryptoList.get(position);
         holder.cryptoItemNameTextView.setText(crypto.getName());
+        holder.cryptoItemSymbolTextView.setText(crypto.getSymbol());
+        String iconUrl = "https://s2.coinmarketcap.com/static/img/coins/64x64/" + crypto.getId() + ".png";
+        Picasso.get().load(iconUrl).into(holder.cryptoItemIconImageView);
         holder.itemView.setOnClickListener(v -> onItemClickListener.handle(crypto));
     }
 
@@ -51,11 +66,14 @@ public class CryptoListItemAdapter extends RecyclerView.Adapter<CryptoListItemAd
     }
 
     static class CryptoListItemViewHolder extends RecyclerView.ViewHolder {
-        TextView cryptoItemNameTextView;
+        TextView cryptoItemNameTextView, cryptoItemSymbolTextView;
+        ImageView cryptoItemIconImageView;
 
         public CryptoListItemViewHolder(@NonNull View itemView) {
             super(itemView);
             cryptoItemNameTextView = itemView.findViewById(R.id.crypto_item_name_tv);
+            cryptoItemSymbolTextView = itemView.findViewById(R.id.crypto_item_symbol_tv);
+            cryptoItemIconImageView = itemView.findViewById(R.id.crypto_item_icon_iv);
         }
     }
 }
