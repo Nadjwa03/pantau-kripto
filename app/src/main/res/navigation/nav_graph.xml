@@ -25,6 +25,9 @@
         <argument
             android:name="CRYPTO_ID"
             app:argType="string" />
+        <action
+            android:id="@+id/action_cryptoDetailsFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
     </fragment>
     <fragment
         android:id="@+id/cryptoBookmarkFragment"
@@ -34,5 +37,14 @@
         <action
             android:id="@+id/action_cryptoBookmarkFragment_to_cryptoDetailsFragment"
             app:destination="@id/cryptoDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.example.pantaukripto.ui.WebViewFragment"
+        android:label="fragment_web_view"
+        tools:layout="@layout/fragment_web_view" >
+        <argument
+            android:name="URL"
+            app:argType="string" />
     </fragment>
 </navigation>
